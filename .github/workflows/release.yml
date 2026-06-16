@@ -1,0 +1,62 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to publish"
+        required: true
+        default: "v0.0.1"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Build And Publish
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref_name }}
+      # Bridge the secret to the env context so steps can gate on its presence
+      # (the secrets context is not available in step-level `if:` conditions).
+      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build tooling
+        run: pip install poetry twine
+
+      # Build only — this package's sole runtime dep (acmt001) is not needed to
+      # build the distribution, so we skip `poetry install`.
+      - name: Build distributions
+        run: poetry build
+
+      - name: Check distributions
+        run: twine check dist/*
+
+      - name: Publish to PyPI
+        # Only attempt a PyPI upload when a token is configured; otherwise skip.
+        if: ${{ env.PYPI_API_TOKEN != '' }}
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ env.PYPI_API_TOKEN }}
+        run: twine upload dist/*
+
+      - name: Publish release artifacts to GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view "${RELEASE_TAG}" --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            gh release upload "${RELEASE_TAG}" dist/* --repo "${{ github.repository }}" --clobber
+          else
+            gh release create "${RELEASE_TAG}" dist/* --repo "${{ github.repository }}" --title "${RELEASE_TAG}" --generate-notes
+          fi
