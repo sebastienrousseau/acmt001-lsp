@@ -26,10 +26,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install core acmt001 + this package
+      - name: Install this package (+ acmt001 from PyPI)
         run: |
           python -m pip install --upgrade pip
-          pip install "git+https://github.com/sebastienrousseau/acmt001.git@main"
           pip install .
           pip install pytest
 
@@ -48,10 +47,9 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install core acmt001 + this package
+      - name: Install this package (+ acmt001 from PyPI)
         run: |
           python -m pip install --upgrade pip
-          pip install "git+https://github.com/sebastienrousseau/acmt001.git@main"
           pip install .
           pip install ruff black mypy
 
