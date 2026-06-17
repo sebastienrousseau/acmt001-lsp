@@ -12,7 +12,8 @@ on:
         default: "v0.0.1"
 
 permissions:
-  contents: write
+  contents: write   # create/update the GitHub Release
+  id-token: write   # OIDC token for PyPI Trusted Publishing
 
 jobs:
   publish:
@@ -20,9 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref_name }}
-      # Bridge the secret to the env context so steps can gate on its presence
-      # (the secrets context is not available in step-level `if:` conditions).
-      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
@@ -35,21 +33,16 @@ jobs:
       - name: Install build tooling
         run: pip install poetry twine
 
-      # Build only — this package's sole runtime dep (acmt001) is not needed to
-      # build the distribution, so we skip `poetry install`.
       - name: Build distributions
         run: poetry build
 
       - name: Check distributions
         run: twine check dist/*
 
+      # Trusted Publishing (OIDC) — no API token/secret required. Requires a
+      # matching publisher to be configured on PyPI for this repo + workflow.
       - name: Publish to PyPI
-        # Only attempt a PyPI upload when a token is configured; otherwise skip.
-        if: ${{ env.PYPI_API_TOKEN != '' }}
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ env.PYPI_API_TOKEN }}
-        run: twine upload dist/*
+        uses: pypa/gh-action-pypi-publish@release/v1
 
       - name: Publish release artifacts to GitHub
         env:
