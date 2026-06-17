@@ -19,6 +19,10 @@ jobs:
   publish:
     name: Build And Publish
     runs-on: ubuntu-latest
+    # Must match the "Environment name" set on the PyPI trusted publisher.
+    environment:
+      name: pypi
+      url: https://pypi.org/p/acmt001-lsp
     env:
       RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref_name }}
 
