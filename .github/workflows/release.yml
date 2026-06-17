@@ -41,8 +41,13 @@ jobs:
 
       # Trusted Publishing (OIDC) — no API token/secret required. Requires a
       # matching publisher to be configured on PyPI for this repo + workflow.
+      # Uses the PYPI_API_TOKEN secret when present (token auth); otherwise
+      # falls back to Trusted Publishing (OIDC). skip-existing keeps re-runs safe.
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          skip-existing: true
 
       - name: Publish release artifacts to GitHub
         env:
