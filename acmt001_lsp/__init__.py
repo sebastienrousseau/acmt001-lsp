@@ -15,4 +15,4 @@
 
 """acmt001-lsp: a Language Server Protocol server for the acmt001 library."""
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"

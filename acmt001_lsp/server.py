@@ -62,6 +62,8 @@ from acmt001 import services
 from lsprotocol import types as lsp
 from pygls.lsp.server import LanguageServer
 
+from . import __version__
+
 DEFAULT_MESSAGE_TYPE = "acmt.007.001.05"
 
 # Flat-record fields whose values are financial identifiers, mapped to the
@@ -278,7 +280,10 @@ def hover_text(
 # ---------------------------------------------------------------------------
 # LSP glue (thin - maps plain dicts to lsprotocol types)
 # ---------------------------------------------------------------------------
-server = LanguageServer("acmt001-lsp", "v0.0.1")
+# The version is read from the package rather than restated here: the
+# literal "v0.0.1" had already outlived the release it named, and an
+# editor showing a stale server version is a confusing thing to debug.
+server = LanguageServer("acmt001-lsp", f"v{__version__}")
 
 _SEVERITY = {
     "error": lsp.DiagnosticSeverity.Error,
@@ -370,5 +375,5 @@ def main() -> None:
     server.start_io()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()
