@@ -12,6 +12,12 @@ the rest of the suite's testing standard.
 
 ### Changed
 
+- **`black` floored at 26.3.1,** from `^24.0.0`. Versions in
+  `>=24.3.0, <26.3.1` carry a high-severity advisory — arbitrary file
+  writes from an unsanitised cache filename. `^24.0.0` cannot reach the
+  fix, so the constraint itself was the problem. Every sibling in the
+  suite was already on 26.3.1; this package was the one left behind.
+
 - **The `acmt001` floor moves to `>=0.0.5`,** from `>=0.0.1`. 0.0.5 is
   the first release built against `xmlschema >=4.3.2`. Anything lower
   admits 0.0.4, which pins `xmlschema<4.0.0` and cannot be installed
