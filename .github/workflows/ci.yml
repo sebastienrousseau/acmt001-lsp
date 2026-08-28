@@ -29,7 +29,12 @@ jobs:
       - name: Install this package (+ acmt001 from PyPI)
         run: |
           python -m pip install --upgrade pip
-          pip install .
+          # Editable on purpose. The step below runs bare `pytest`, which
+          # does not put the working directory on sys.path (unlike
+          # `python -m pytest`), so a non-editable install makes the tests
+          # import the site-packages copy while --cov measures the source
+          # tree: every test passes and coverage reports 0%.
+          pip install -e .
           pip install pytest pytest-cov
 
       - name: Run tests
