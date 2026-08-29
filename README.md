@@ -28,6 +28,7 @@ message generation.
 - [Features](#features)
 - [Using the helpers](#using-the-helpers)
 - [Examples](#examples)
+- [Benchmarks](#benchmarks)
 - [Development](#development)
 - [Licence](#licence)
 - [Contribution](#contribution)
@@ -238,6 +239,34 @@ script for the helper API:
 git clone https://github.com/sebastienrousseau/acmt001-lsp.git && cd acmt001-lsp
 python examples/lsp_helpers.py
 ```
+
+## Benchmarks
+
+A language server is measured against a person typing, not in
+throughput: the client recomputes diagnostics on every change, so what
+matters is whether the answer returns before the user notices.
+
+```sh
+python benches/bench_diagnostics.py           # full run
+python benches/bench_diagnostics.py --quick   # what CI runs
+python benches/bench_diagnostics.py --json    # machine-readable
+```
+
+The benchmark marks every measurement against two thresholds — one
+frame (~16 ms), where squiggles still track the cursor, and ~100 ms,
+past which the editor feels laggy on every keystroke.
+
+Two results are worth knowing before you open a large file. Each record
+is validated against the message-type schema **independently**, so cost
+tracks record count almost directly: a single record lands near 2 ms and
+the 100 ms budget is crossed somewhere around a hundred records. And the
+**mid-edit path is the cheapest one** — while a quote is still unclosed,
+JSON parsing fails immediately and no record is validated, so the state
+the editor calls most often costs microseconds. That is the opposite of
+the usual trap, where a linter is quick on valid input and slow on the
+invalid input it actually spends its life being handed.
+
+See [docs/benchmarks.md](docs/benchmarks.md) for the full picture.
 
 ## Development
 

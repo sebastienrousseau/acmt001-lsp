@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "acmt001-lsp"
-version = "0.0.2"
+version = "0.0.9"
 description = "Language Server Protocol (LSP) server for authoring acmt001 ISO 20022 Account Management data files."
 authors = ["Sebastien Rousseau <sebastian.rousseau@gmail.com>"]
 license = "Apache-2.0 OR MIT"
@@ -32,6 +32,9 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
+# The vendored conformance test carries a digest of its own bytes,
+# so reformatting it would invalidate the check it exists to make.
+extend-exclude = "tests/test_suite_conformance\\.py"
 line-length = 79
 target-version = ['py310']
 
