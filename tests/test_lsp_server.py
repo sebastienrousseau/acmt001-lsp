@@ -70,6 +70,14 @@ def test_malformed_json_produces_single_diagnostic():
     assert "Invalid JSON" in diagnostics[0]["message"]
 
 
+def test_json_nested_past_the_parser_limit_is_a_diagnostic():
+    """Nesting too deep for the json module is reported, not raised."""
+    diagnostics = lsp_server.compute_diagnostics("[" * 100_000)
+    assert len(diagnostics) == 1
+    assert diagnostics[0]["severity"] == "error"
+    assert "Invalid JSON" in diagnostics[0]["message"]
+
+
 def test_completion_items_include_field_and_message_type():
     """Completion includes a known field and at least one message type."""
     labels = {item["label"] for item in lsp_server.completion_items()}

@@ -152,6 +152,10 @@ def _parse_records(text: str) -> tuple[list[dict[str, Any]], list[dict]]:
                 max(0, exc.colno - 1),
             )
         ]
+    except RecursionError:
+        # The json module gives up on nesting deeper than the interpreter's
+        # recursion limit; that is a document the parser cannot read.
+        return [], [_error("Invalid JSON: nested too deeply to parse")]
     records = _normalise_records(parsed)
     if not records:
         return [], [
