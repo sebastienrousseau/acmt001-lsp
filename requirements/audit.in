@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: 2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+# Dependency advisory audit for the Security workflow's pip-audit job,
+# installed into its own virtual environment.
+# Regenerate with: make pip-compile
+pip-audit>=2.10
+# Advisory floors for pip-audit's own dependencies: urllib3
+# PYSEC-2026-4175/4176/4177, certifi PYSEC-2026-4320 (GHSA-6q48-6c7w-9gw2).
+urllib3>=2.8.0
+certifi>=2026.10.19
