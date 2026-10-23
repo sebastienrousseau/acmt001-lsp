@@ -1,0 +1,6 @@
+{
+  "acmt001_lsp/server.py::_record_line_offsets": {
+    "cognitive": 20,
+    "cyclomatic": 12
+  }
+}

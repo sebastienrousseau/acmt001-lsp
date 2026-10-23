@@ -7,7 +7,7 @@
 PY ?= .venv/bin/python
 PKG := acmt001_lsp
 
-.PHONY: help install test lint format type-check security verify-versions audit pip-compile fuzz examples bench check clean
+.PHONY: help install test lint format type-check security complexity verify-versions audit pip-compile fuzz examples bench check clean
 
 help: ## Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
@@ -37,6 +37,9 @@ type-check: ## Run mypy type checking
 
 security: ## Run security scan (bandit)
 	$(PY) -m bandit -r $(PKG)/ -ll
+
+complexity: ## Per-function complexity ceilings against complexity-baseline.json
+	$(PY) scripts/check_complexity.py
 
 verify-versions: ## Every restatement of the version agrees with pyproject.toml
 	$(PY) scripts/verify_versions.py
@@ -68,7 +71,7 @@ examples: ## Run every example end-to-end
 bench: ## The benchmark in quick mode (what CI runs)
 	$(PY) benches/bench_diagnostics.py --quick
 
-check: lint type-check security verify-versions test examples bench ## Run every gate CI runs on a pull request
+check: lint type-check security complexity verify-versions test examples bench ## Run every gate CI runs on a pull request
 
 clean: ## Remove build artifacts and caches
 	rm -rf build/ dist/ *.egg-info .eggs/
