@@ -78,6 +78,26 @@ def test_json_nested_past_the_parser_limit_is_a_diagnostic():
     assert "Invalid JSON" in diagnostics[0]["message"]
 
 
+def test_recursion_error_from_the_parser_is_a_diagnostic(monkeypatch):
+    """A RecursionError from json.loads is reported, not raised.
+
+    From Python 3.14 the parser's depth limit follows the C stack, so on a
+    runner with a large stack the input above parses to a plain syntax
+    error instead; raising here covers the branch on every interpreter.
+    """
+
+    def too_deep(_text):
+        raise RecursionError("maximum recursion depth exceeded")
+
+    monkeypatch.setattr(lsp_server.json, "loads", too_deep)
+    diagnostics = lsp_server.compute_diagnostics("[]")
+    assert len(diagnostics) == 1
+    assert diagnostics[0]["severity"] == "error"
+    assert (
+        diagnostics[0]["message"] == "Invalid JSON: nested too deeply to parse"
+    )
+
+
 def test_completion_items_include_field_and_message_type():
     """Completion includes a known field and at least one message type."""
     labels = {item["label"] for item in lsp_server.completion_items()}
