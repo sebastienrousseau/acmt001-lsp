@@ -1,0 +1,12 @@
+name: "acmt001-lsp CodeQL config"
+
+# Tests and examples feed deliberately fake account data (IBANs, BICs,
+# names) through the library, which CodeQL's clear-text-logging
+# heuristics flag even though nothing in them is real. Excluding them
+# keeps the scan on the shipped package in acmt001_lsp/.
+paths-ignore:
+  - examples
+  - tests
+
+queries:
+  - uses: security-and-quality

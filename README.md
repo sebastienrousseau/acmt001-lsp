@@ -276,8 +276,7 @@ See [docs/benchmarks.md](docs/benchmarks.md) for the full picture.
 ```bash
 git clone https://github.com/sebastienrousseau/acmt001-lsp.git && cd acmt001-lsp
 mise install
-poetry install
-poetry shell
+make install      # .venv from the hash-pinned requirements/ci.txt
 ```
 
 A `Makefile` orchestrates the quality gates (kept in lockstep with CI):

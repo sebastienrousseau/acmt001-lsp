@@ -1,34 +1,74 @@
-.PHONY: help install dev test lint format type-check security clean examples check
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+# Convenience targets for acmt001-lsp.
+#
+# Every gate runs what CI runs, from the same hash-pinned requirements.
+# `make install` builds that environment in .venv.
 
-PYTHON ?= python3
-POETRY ?= poetry
+PY ?= .venv/bin/python
+PKG := acmt001_lsp
+
+.PHONY: help install test lint format type-check security verify-versions audit pip-compile fuzz examples bench check clean
 
 help: ## Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-install: ## Install production dependencies
-	$(POETRY) install --only main
+install: ## Create/refresh .venv from the hash-pinned CI tree
+	python3 -m venv .venv
+	$(PY) -m pip install --require-hashes -r requirements/ci.txt
+	$(PY) -m pip install --no-deps --no-build-isolation -e .
 
-dev: ## Install all dependencies (including dev)
-	$(POETRY) install
+test: ## Run tests with the 100% coverage gate
+	$(PY) -m pytest tests/ -v
 
-test: ## Run tests
-	$(POETRY) run pytest tests/ -v
+# Same paths CI lints, so a green `make lint` means a green lint job.
+LINT_PATHS := $(PKG) tests benches scripts examples fuzz
 
-lint: ## Run linters (ruff + black check)
-	$(POETRY) run ruff check acmt001_lsp/ tests/
-	$(POETRY) run black --check acmt001_lsp/ tests/
+lint: ## Ruff lint and black format check (what CI runs)
+	$(PY) -m ruff check $(LINT_PATHS)
+	$(PY) -m black --check $(LINT_PATHS)
 
 format: ## Auto-format code (ruff fix + black)
-	$(POETRY) run ruff check --fix acmt001_lsp/ tests/
-	$(POETRY) run black acmt001_lsp/ tests/
+	$(PY) -m ruff check --fix $(LINT_PATHS)
+	$(PY) -m black $(LINT_PATHS)
 
 type-check: ## Run mypy type checking
-	$(POETRY) run mypy acmt001_lsp/
+	$(PY) -m mypy $(PKG)/
 
 security: ## Run security scan (bandit)
-	$(POETRY) run bandit -r acmt001_lsp/ -ll
+	$(PY) -m bandit -r $(PKG)/ -ll
+
+verify-versions: ## Every restatement of the version agrees with pyproject.toml
+	$(PY) scripts/verify_versions.py
+
+audit: ## pip-audit every hash-pinned requirements file (needs pip-audit)
+	@for f in requirements/*.txt; do \
+		echo "--- $$f"; \
+		pip-audit --progress-spinner off --require-hashes --disable-pip -r "$$f" || exit 1; \
+	done
+
+pip-compile: ## Regenerate hash-pinned requirements/*.txt from requirements/*.in (needs uv)
+	@command -v uv >/dev/null || { echo "uv is required: https://docs.astral.sh/uv/"; exit 1; }
+	@for f in requirements/*.in; do \
+		[ "$$f" = requirements/fuzz.in ] && continue; \
+		echo "compiling $$f"; \
+		uv pip compile --quiet --generate-hashes --universal \
+			--python-version 3.10 "$$f" -o "$${f%.in}.txt"; \
+	done
+	@echo "compiling requirements/fuzz.in (Linux x86_64, Atheris wheels only)"
+	@uv pip compile --quiet --generate-hashes --python-platform x86_64-manylinux_2_17 \
+		--python-version 3.12 requirements/fuzz.in -o requirements/fuzz.txt
+
+fuzz: ## Atheris for FUZZ_SECONDS (default 60); Linux x86_64, needs requirements/fuzz.txt
+	$(PY) fuzz/fuzz_documents.py fuzz/corpus -max_total_time=$(or $(FUZZ_SECONDS),60)
+
+examples: ## Run every example end-to-end
+	@for e in examples/*.py; do echo "--- $$e ---"; $(PY) "$$e" || exit 1; done
+
+bench: ## The benchmark in quick mode (what CI runs)
+	$(PY) benches/bench_diagnostics.py --quick
+
+check: lint type-check security verify-versions test examples bench ## Run every gate CI runs on a pull request
 
 clean: ## Remove build artifacts and caches
 	rm -rf build/ dist/ *.egg-info .eggs/
@@ -36,8 +76,3 @@ clean: ## Remove build artifacts and caches
 	rm -rf coverage.xml .coverage
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name '*.pyc' -delete 2>/dev/null || true
-
-examples: ## Verify example scripts run
-	$(POETRY) run python examples/lsp_helpers.py
-
-check: lint type-check security test examples ## Run all checks
