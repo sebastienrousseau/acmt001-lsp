@@ -14,10 +14,10 @@
 completion, and hover as you author the JSON records that drive `acmt`
 message generation.
 
-> **Latest release: v0.0.1** — a [pygls][pygls]-based Language Server with
-> schema + IBAN/BIC/LEI diagnostics, field and message-type completion, and
-> schema-description hover, all backed by `acmt001.services`.
-> [See what's new →][release-001]
+> **Latest release: v0.0.12.** A [pygls][pygls]-based Language Server
+> with schema + IBAN/BIC/LEI diagnostics, field and message-type
+> completion, and schema-description hover, all backed by
+> `acmt001.services`. [See what's new][release-latest]
 
 ## Contents
 
@@ -313,7 +313,7 @@ Built on [pygls][pygls] and [lsprotocol][lsprotocol] by the
 [lsp]: https://microsoft.github.io/language-server-protocol/
 [lsprotocol]: https://github.com/microsoft/lsprotocol
 [pygls]: https://github.com/openlawlibrary/pygls
-[release-001]: https://github.com/sebastienrousseau/acmt001-lsp/releases/tag/v0.0.1
+[release-latest]: https://github.com/sebastienrousseau/acmt001-lsp/releases/tag/v0.0.12
 [banner]: https://kura.pro/acmt001-lsp/images/banners/banner-acmt001-lsp.svg 'Acmt001-lsp'
 [docs-badge]: https://img.shields.io/badge/Docs-acmt001.com-blue?style=for-the-badge
 [docs-url]: https://acmt001.com/

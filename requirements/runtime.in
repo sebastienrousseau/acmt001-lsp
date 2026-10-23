@@ -5,7 +5,10 @@
 # installs nothing unpinned (OpenSSF Scorecard Pinned-Dependencies); the
 # package itself goes on with --no-deps.
 # Regenerate with: make pip-compile
-acmt001>=0.0.9,<1
+# The suite releases in lockstep, core first: the floor is this release.
+# runtime.txt, ci.txt and fuzz.txt still pin acmt001 0.0.9 until the core
+# 0.0.12 is on PyPI; then `make pip-compile` relocks them.
+acmt001>=0.0.12,<1
 pygls>=2.0,<3
 # Advisory floors for transitive dependencies, so no affected version can
 # resolve: cryptography PYSEC-2026-3552 (GHSA-g6cj-pr64-35w5), anyio

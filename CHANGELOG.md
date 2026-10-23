@@ -5,6 +5,52 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.12] - 2026-10-23
+
+Security and supply-chain hardening. The version moves from `0.0.9`
+straight to `0.0.12`, skipping `0.0.10` and `0.0.11`, so that `acmt001`,
+`acmt001-lsp` and `acmt001-mcp` ship one number again: `acmt001-mcp`
+already published `0.0.11`.
+
+### Security
+
+- **`acmt001` is floored at `>=0.0.12,<1`**, the core release this one
+  ships with, so the core's own advisory floors (among them
+  `cryptography >=50.0.0`) reach every install of this package.
+- The development and CI toolchain is floored past published
+  advisories: `black ^26.10.1` (CVE-2026-114134), and `cryptography`,
+  `anyio`, `opentelemetry-api`, `certifi` and `urllib3` wherever they
+  resolve.
+
+### Fixed
+
+- `pygls` is required at `>=2.0,<3`. The server is written against the
+  pygls 2 API, and the previous `>=1.3` admitted releases it cannot
+  import.
+- A document nested deeper than the JSON parser can read now gets an
+  "Invalid JSON: nested too deeply to parse" diagnostic instead of
+  making the diagnostics handler raise.
+
+### Added
+
+- Hash-pinned `requirements/*.txt` trees compiled with uv from
+  `requirements/*.in`; every install in CI uses them.
+- CodeQL, OpenSSF Scorecard, DCO, Atheris fuzzing, a version-sources
+  check, bandit and pip-audit workflows.
+- Release provenance: SLSA build attestations, keyless signatures, PEP
+  740 attestations on PyPI, and CycloneDX and SPDX SBOMs on the GitHub
+  release.
+- A complexity gate (cyclomatic 10, cognitive 15, Halstead difficulty
+  30, 60 lines per function, 500 per file) against a committed baseline
+  that may only shrink.
+
+### Changed
+
+- Version aligned to `0.0.12` across the suite.
+- `compute_diagnostics` is split into small helpers, with no change in
+  what it reports.
+- The README badge row follows the suite's single style.
+
 ## [0.0.9] - 2026-08-29
 
 Aligns the `acmt001` suite on one version number, and adds the two gates

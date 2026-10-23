@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "acmt001-lsp"
-version = "0.0.9"
+version = "0.0.12"
 description = "Language Server Protocol (LSP) server for authoring acmt001 ISO 20022 Account Management data files."
 authors = ["Sebastien Rousseau <sebastian.rousseau@gmail.com>"]
 license = "Apache-2.0 OR MIT"
@@ -16,7 +16,8 @@ acmt001-lsp = "acmt001_lsp.server:main"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-acmt001 = ">=0.0.5"
+# The suite releases in lockstep, core first: the floor is this release.
+acmt001 = ">=0.0.12,<1"
 # pygls.lsp.server and the publish API the server uses arrived in 2.0.
 pygls = ">=2.0,<3"
 
