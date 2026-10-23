@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+# CI test, lint, type-check, security and complexity toolchain on top of
+# the runtime set, mirroring [tool.poetry.group.dev.dependencies].
+# Hash-pinned in ci.txt so every pip install in .github/workflows is
+# pinned (OpenSSF Scorecard Pinned-Dependencies); scripts/ci-install.sh
+# installs it. poetry-core is here because the package installs with
+# --no-build-isolation, which keeps the build backend pinned by hash too.
+# Regenerate with: make pip-compile
+-r runtime.in
+poetry-core>=2,<3
+packaging>=23.0
+tomli>=2
+pytest>=9.0.3,<10.0.0
+pytest-cov>=6.0.0,<8.0.0
+# black: CVE-2026-114134 (GHSA-cg8m-r9f2-5wm2) is fixed in 26.10.1.
+black>=26.10.1,<27
+ruff>=0.1,<0.18
+mypy>=1.11,<3
+bandit>=1.7.0,<2
+# Complexity gate: scripts/check_complexity.py.
+radon>=6.0.1,<7
+complexipy>=8.1,<9

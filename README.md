@@ -2,22 +2,23 @@
 
 ![Acmt001-lsp banner][banner]
 
-[![PyPI Version][pypi-badge]][07]
-[![Python Versions][python-versions-badge]][07]
-[![PyPI Downloads][pypi-downloads-badge]][07]
-[![Licence][licence-badge]][01]
-[![Tests][tests-badge]][tests-url]
-[![Quality][quality-badge]][quality-url]
-[![Documentation][docs-badge]][docs-url]
+<p align="center">
+  <a href="https://github.com/sebastienrousseau/acmt001-lsp/actions"><img src="https://img.shields.io/github/actions/workflow/status/sebastienrousseau/acmt001-lsp/ci.yml?style=for-the-badge&logo=github" alt="Build" height="28" /></a>
+  <a href="https://pypi.org/project/acmt001-lsp/"><img src="https://img.shields.io/pypi/v/acmt001-lsp?style=for-the-badge&color=fc8d62&logo=python" alt="Registry" height="28" /></a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/sebastienrousseau/acmt001-lsp"><img src="https://img.shields.io/ossf-scorecard/github.com/sebastienrousseau/acmt001-lsp?style=for-the-badge&label=OpenSSF%20Scorecard&logo=openssf" alt="OpenSSF Scorecard" height="28" /></a>
+  <a href="https://www.bestpractices.dev/projects/15826"><img src="https://img.shields.io/cii/level/15826?style=for-the-badge&label=OpenSSF%20Best%20Practices&logo=openssf" alt="OpenSSF Best Practices" height="28" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0%20OR%20MIT-blue.svg?style=for-the-badge" alt="License: Apache-2.0 OR MIT" height="28" /></a>
+  <a href="pyproject.toml"><img src="https://img.shields.io/badge/Python-3.10%2B-93450a.svg?style=for-the-badge&logo=python" alt="Python 3.10 or newer" height="28" /></a>
+</p>
 
 **Real-time editor help for ISO 20022 account-data files** — diagnostics,
 completion, and hover as you author the JSON records that drive `acmt`
 message generation.
 
-> **Latest release: v0.0.1** — a [pygls][pygls]-based Language Server with
-> schema + IBAN/BIC/LEI diagnostics, field and message-type completion, and
-> schema-description hover, all backed by `acmt001.services`.
-> [See what's new →][release-001]
+> **Latest release: v0.0.13.** A [pygls][pygls]-based Language Server
+> with schema + IBAN/BIC/LEI diagnostics, field and message-type
+> completion, and schema-description hover, all backed by
+> `acmt001.services`. [See what's new][release-latest]
 
 ## Contents
 
@@ -276,8 +277,7 @@ See [docs/benchmarks.md](docs/benchmarks.md) for the full picture.
 ```bash
 git clone https://github.com/sebastienrousseau/acmt001-lsp.git && cd acmt001-lsp
 mise install
-poetry install
-poetry shell
+make install      # .venv from the hash-pinned requirements/ci.txt
 ```
 
 A `Makefile` orchestrates the quality gates (kept in lockstep with CI):
@@ -309,20 +309,9 @@ Built on [pygls][pygls] and [lsprotocol][lsprotocol] by the
 [01]: https://opensource.org/license/apache-2-0/
 [04]: https://github.com/sebastienrousseau/acmt001-lsp/blob/main/CONTRIBUTING.md
 [05]: https://github.com/sebastienrousseau/acmt001-lsp/graphs/contributors
-[07]: https://pypi.org/project/acmt001-lsp/
 [acmt001]: https://github.com/sebastienrousseau/acmt001
 [lsp]: https://microsoft.github.io/language-server-protocol/
 [lsprotocol]: https://github.com/microsoft/lsprotocol
 [pygls]: https://github.com/openlawlibrary/pygls
-[release-001]: https://github.com/sebastienrousseau/acmt001-lsp/releases/tag/v0.0.1
+[release-latest]: https://github.com/sebastienrousseau/acmt001-lsp/releases/tag/v0.0.13
 [banner]: https://kura.pro/acmt001-lsp/images/banners/banner-acmt001-lsp.svg 'Acmt001-lsp'
-[docs-badge]: https://img.shields.io/badge/Docs-acmt001.com-blue?style=for-the-badge
-[docs-url]: https://acmt001.com/
-[licence-badge]: https://img.shields.io/pypi/l/acmt001-lsp?style=for-the-badge
-[pypi-badge]: https://img.shields.io/pypi/v/acmt001-lsp?style=for-the-badge
-[pypi-downloads-badge]: https://img.shields.io/pypi/dm/acmt001-lsp.svg?style=for-the-badge
-[python-versions-badge]: https://img.shields.io/pypi/pyversions/acmt001-lsp.svg?style=for-the-badge
-[quality-badge]: https://img.shields.io/github/actions/workflow/status/sebastienrousseau/acmt001-lsp/ci.yml?branch=main&label=Quality&style=for-the-badge
-[quality-url]: https://github.com/sebastienrousseau/acmt001-lsp/actions/workflows/ci.yml
-[tests-badge]: https://img.shields.io/github/actions/workflow/status/sebastienrousseau/acmt001-lsp/ci.yml?branch=main&label=Tests&style=for-the-badge
-[tests-url]: https://github.com/sebastienrousseau/acmt001-lsp/actions/workflows/ci.yml

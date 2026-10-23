@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "acmt001-lsp"
-version = "0.0.9"
+version = "0.0.13"
 description = "Language Server Protocol (LSP) server for authoring acmt001 ISO 20022 Account Management data files."
 authors = ["Sebastien Rousseau <sebastian.rousseau@gmail.com>"]
 license = "Apache-2.0 OR MIT"
@@ -16,16 +16,24 @@ acmt001-lsp = "acmt001_lsp.server:main"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-acmt001 = ">=0.0.5"
-pygls = ">=1.3"
+# The suite releases in lockstep, core first: the floor is this release.
+acmt001 = ">=0.0.13,<1"
+# pygls.lsp.server and the publish API the server uses arrived in 2.0.
+pygls = ">=2.0,<3"
 
 [tool.poetry.group.dev.dependencies]
+# Mirrors requirements/ci.in, the hash-pinned set CI installs.
+packaging = ">=23.0"
+tomli = { version = ">=2.0", python = "<3.11" }
 pytest = ">=9.0.3,<10.0.0"
 pytest-cov = ">=6.0.0,<8.0.0"
-black = "^26.3.1"
-ruff = "^0.1.0"
-mypy = "^1.11.0"
-bandit = "^1.7.0"
+# CVE-2026-114134 (GHSA-cg8m-r9f2-5wm2) is fixed in black 26.10.1.
+black = "^26.10.1"
+ruff = ">=0.1,<0.18"
+mypy = ">=1.11,<3"
+bandit = ">=1.7.0,<2"
+radon = ">=6.0.1,<7"
+complexipy = { version = ">=8.1,<9", python = "<3.16" }
 
 [build-system]
 requires = ["poetry-core"]

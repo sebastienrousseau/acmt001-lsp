@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+# Build and publish tooling for the release job. poetry-core is pinned
+# here because the build runs with --no-isolation, which keeps the
+# backend pinned by hash rather than fetched at build time.
+# Regenerate with: make pip-compile
+build
+poetry-core>=2,<3
+twine
+# Advisory floors for transitive dependencies of twine and build:
+# urllib3 PYSEC-2026-4175/4176/4177, certifi PYSEC-2026-4320
+# (GHSA-6q48-6c7w-9gw2).
+urllib3>=2.8.0
+certifi>=2026.10.19

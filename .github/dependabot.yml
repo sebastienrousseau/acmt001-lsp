@@ -1,0 +1,43 @@
+version: 2
+updates:
+  # pyproject.toml. requirements/*.txt are regenerated with
+  # `make pip-compile` from requirements/*.in rather than bumped one pin
+  # at a time, since a hash-pinned tree must be resolved as a whole.
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "sebastienrousseau"
+    labels:
+      - "dependencies"
+      - "automated"
+    commit-message:
+      prefix: "chore(deps):"
+      include: "scope"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "python"
+      # acmt001 is hand-bumped in lockstep with the suite; Dependabot
+      # would otherwise propose bumps that do not follow the
+      # version-for-version release policy.
+      - dependency-name: "acmt001"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    reviewers:
+      - "sebastienrousseau"
+    labels:
+      - "ci/cd"
+      - "automated"
+    groups:
+      github-actions:
+        patterns:
+          - "*"

@@ -126,6 +126,95 @@ def _record_line_offsets(text: str) -> list[int]:
     return offsets
 
 
+def _error(message: str, line: int = 0, character: int = 0) -> dict:
+    """A plain error diagnostic at ``line``/``character``."""
+    return {
+        "line": line,
+        "character": character,
+        "severity": "error",
+        "message": message,
+    }
+
+
+def _parse_records(text: str) -> tuple[list[dict[str, Any]], list[dict]]:
+    """Parse ``text`` into records, or return the diagnostics why not.
+
+    Returns ``(records, [])`` on success and ``([], diagnostics)`` when the
+    text is not JSON or holds no records.
+    """
+    try:
+        parsed = json.loads(text)
+    except json.JSONDecodeError as exc:
+        return [], [
+            _error(
+                f"Invalid JSON: {exc.msg}",
+                max(0, exc.lineno - 1),
+                max(0, exc.colno - 1),
+            )
+        ]
+    except RecursionError:
+        # The json module gives up on nesting deeper than the interpreter's
+        # recursion limit; that is a document the parser cannot read.
+        return [], [_error("Invalid JSON: nested too deeply to parse")]
+    records = _normalise_records(parsed)
+    if not records:
+        return [], [
+            _error(
+                "Expected a JSON array of record objects "
+                "(or a single record object)."
+            )
+        ]
+    return records, []
+
+
+def _line_for(line_offsets: list[int], row: int) -> int:
+    """The line record ``row`` starts on, or 0 when it was not located."""
+    if 0 <= row < len(line_offsets):
+        return line_offsets[row]
+    return 0
+
+
+def _schema_diagnostics(
+    message_type: str, records: list[dict[str, Any]], line_offsets: list[int]
+) -> list[dict]:
+    """Schema validation (required fields, types, patterns, lengths, ...)."""
+    diagnostics: list[dict] = []
+    report = services.validate_records(message_type, records)
+    for err in report["errors"]:
+        path = err.get("path") or ""
+        prefix = f"{path}: " if path else ""
+        diagnostics.append(
+            _error(
+                f"{prefix}{err['message']}",
+                _line_for(line_offsets, err.get("row", 0)),
+            )
+        )
+    return diagnostics
+
+
+def _record_identifier_diagnostics(
+    record: dict[str, Any], line: int
+) -> list[dict]:
+    """IBAN / BIC / LEI validation for the identifier values one record holds."""
+    diagnostics: list[dict] = []
+    for field, kind in _IDENTIFIER_FIELDS.items():
+        value = record.get(field)
+        if not value or not isinstance(value, str):
+            continue
+        if not services.validate_identifier(kind, value)["valid"]:
+            diagnostics.append(
+                {
+                    "line": line,
+                    "character": 0,
+                    "severity": "warning",
+                    "message": (
+                        f"{field}: {value!r} is not a valid {kind.upper()}."
+                    ),
+                }
+            )
+    return diagnostics
+
+
 def compute_diagnostics(
     text: str, message_type: str = DEFAULT_MESSAGE_TYPE
 ) -> list[dict]:
@@ -147,77 +236,18 @@ def compute_diagnostics(
             {"line": int, "character": int,
              "severity": "error" | "warning", "message": str}
     """
-    try:
-        parsed = json.loads(text)
-    except json.JSONDecodeError as exc:
-        return [
-            {
-                "line": max(0, exc.lineno - 1),
-                "character": max(0, exc.colno - 1),
-                "severity": "error",
-                "message": f"Invalid JSON: {exc.msg}",
-            }
-        ]
-
-    records = _normalise_records(parsed)
-    if not records:
-        return [
-            {
-                "line": 0,
-                "character": 0,
-                "severity": "error",
-                "message": (
-                    "Expected a JSON array of record objects "
-                    "(or a single record object)."
-                ),
-            }
-        ]
-
+    records, problems = _parse_records(text)
+    if problems:
+        return problems
     line_offsets = _record_line_offsets(text)
-
-    def line_for(row: int) -> int:
-        if 0 <= row < len(line_offsets):
-            return line_offsets[row]
-        return 0
-
-    diagnostics: list[dict] = []
-
-    # Schema validation (required fields, types, patterns, lengths, ...).
-    report = services.validate_records(message_type, records)
-    for err in report["errors"]:
-        row = err.get("row", 0)
-        path = err.get("path") or ""
-        prefix = f"{path}: " if path else ""
-        diagnostics.append(
-            {
-                "line": line_for(row),
-                "character": 0,
-                "severity": "error",
-                "message": f"{prefix}{err['message']}",
-            }
-        )
-
-    # Identifier validation (IBAN / BIC / LEI) for any present values.
+    diagnostics = _schema_diagnostics(message_type, records, line_offsets)
     for row, record in enumerate(records):
-        if not isinstance(record, dict):
-            continue
-        for field, kind in _IDENTIFIER_FIELDS.items():
-            value = record.get(field)
-            if not value or not isinstance(value, str):
-                continue
-            if not services.validate_identifier(kind, value)["valid"]:
-                diagnostics.append(
-                    {
-                        "line": line_for(row),
-                        "character": 0,
-                        "severity": "warning",
-                        "message": (
-                            f"{field}: {value!r} is not a valid "
-                            f"{kind.upper()}."
-                        ),
-                    }
+        if isinstance(record, dict):
+            diagnostics.extend(
+                _record_identifier_diagnostics(
+                    record, _line_for(line_offsets, row)
                 )
-
+            )
     return diagnostics
 
 

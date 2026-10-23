@@ -1,0 +1,62 @@
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 4 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  bandit:
+    name: Bandit (static analysis)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install bandit (hash-pinned)
+        run: python -m pip install --require-hashes -r requirements/ci.txt
+
+      - name: Run bandit
+        run: bandit -r acmt001_lsp/ -ll
+
+  # The native advisory audit over every hash-pinned requirements file, so
+  # a published advisory against anything this package pulls in fails the
+  # pull request rather than waiting for a Dependabot alert. pip-audit
+  # gets a virtual environment of its own, so its pins and the audited
+  # trees never have to agree.
+  pip-audit:
+    name: pip-audit (vulnerable dependencies)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install pip-audit (hash-pinned)
+        run: |
+          python -m venv .audit
+          .audit/bin/pip install --require-hashes -r requirements/audit.txt
+
+      - name: Audit requirements/*.txt
+        run: |
+          for f in requirements/*.txt; do
+            echo "== $f"
+            .audit/bin/pip-audit --progress-spinner off --require-hashes --disable-pip --desc -r "$f"
+          done
