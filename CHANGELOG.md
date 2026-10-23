@@ -5,16 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.0.12] - 2026-10-23
+## [0.0.13] - 2026-10-23
 
 Security and supply-chain hardening. The version moves from `0.0.9`
-straight to `0.0.12`, skipping `0.0.10` and `0.0.11`, so that `acmt001`,
+straight to `0.0.13`, skipping `0.0.10` to `0.0.12`, so that `acmt001`,
 `acmt001-lsp` and `acmt001-mcp` ship one number again: `acmt001-mcp`
-already published `0.0.11`.
+already published `0.0.11`, and the core's `0.0.12` is yanked (it broke
+`acmt001-mcp 0.0.11` at import), with `0.0.13` as its fix.
 
 ### Security
 
-- **`acmt001` is floored at `>=0.0.12,<1`**, the core release this one
+- **`acmt001` is floored at `>=0.0.13,<1`**, the core release this one
   ships with, so the core's own advisory floors (among them
   `cryptography >=50.0.0`) reach every install of this package.
 - The development and CI toolchain is floored past published
@@ -46,7 +47,7 @@ already published `0.0.11`.
 
 ### Changed
 
-- Version aligned to `0.0.12` across the suite.
+- Version aligned to `0.0.13` across the suite.
 - `compute_diagnostics` is split into small helpers, with no change in
   what it reports.
 - The README badge row follows the suite's single style.
