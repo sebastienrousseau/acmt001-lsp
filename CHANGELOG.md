@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Security
+
+- `requirements/audit.txt`, the Security workflow's pip-audit
+  environment, is compiled for Python 3.12, the only Python that installs
+  it, and floors `filelock` at `>=4.2.1` (GHSA-9vhv-jxww-xfm5,
+  GHSA-567q-5qvw-pf92, GHSA-v4x8-3wr5-3wq8). The Python 3.10 split had
+  pinned `filelock 4.1.0`; 4.2.1 needs Python 3.11.
+
+### Changed
+
+- The release workflow's `pypa/gh-action-pypi-publish` pin moves to
+  v1.14.3 (`7245906`).
+
 ## [0.0.13] - 2026-10-23
 
 Security and supply-chain hardening. The version moves from `0.0.9`
