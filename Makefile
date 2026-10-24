@@ -53,11 +53,14 @@ audit: ## pip-audit every hash-pinned requirements file (needs pip-audit)
 pip-compile: ## Regenerate hash-pinned requirements/*.txt from requirements/*.in (needs uv)
 	@command -v uv >/dev/null || { echo "uv is required: https://docs.astral.sh/uv/"; exit 1; }
 	@for f in requirements/*.in; do \
-		[ "$$f" = requirements/fuzz.in ] && continue; \
+		case "$$f" in requirements/fuzz.in|requirements/audit.in) continue;; esac; \
 		echo "compiling $$f"; \
 		uv pip compile --quiet --generate-hashes --universal \
 			--python-version 3.10 "$$f" -o "$${f%.in}.txt"; \
 	done
+	@echo "compiling requirements/audit.in (3.12, the Security workflow's pip-audit Python)"
+	@uv pip compile --quiet --generate-hashes --universal \
+		--python-version 3.12 requirements/audit.in -o requirements/audit.txt
 	@echo "compiling requirements/fuzz.in (Linux x86_64, Atheris wheels only)"
 	@uv pip compile --quiet --generate-hashes --python-platform x86_64-manylinux_2_17 \
 		--python-version 3.12 requirements/fuzz.in -o requirements/fuzz.txt
