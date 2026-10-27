@@ -15,6 +15,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   GHSA-567q-5qvw-pf92, GHSA-v4x8-3wr5-3wq8). The Python 3.10 split had
   pinned `filelock 4.1.0`; 4.2.1 needs Python 3.11.
 
+### Removed
+
+- **Python 3.10 is no longer supported; the floor is 3.11**, a decision
+  taken for the whole `acmt001` suite, which now shares one floor
+  (`acmt001-mcp` moved first, when Hypothesis 6.170.12 stopped
+  resolving on 3.10). `pyproject.toml` declares
+  `python = ">=3.11,<4.0"` (and the classifiers Poetry derives from
+  it), ruff, black and mypy target 3.11, the CI test matrix runs 3.11
+  to 3.14, and `make pip-compile` compiles for 3.11. The `tomli`
+  backport is gone from the dev group and `requirements/ci.in`, and
+  `scripts/check_suite_consistency.py` imports the stdlib `tomllib`
+  directly. `requirements/ci.txt`, `runtime.txt` and `build.txt` are
+  recompiled for 3.11, which only removes the 3.10 forks: no pin for
+  3.11 or newer moves. The README, `CONTRIBUTING.md`, the quickstart
+  and the examples state the new floor.
+
 ### Changed
 
 - The release workflow's `pypa/gh-action-pypi-publish` pin moves to

@@ -56,7 +56,7 @@ pip-compile: ## Regenerate hash-pinned requirements/*.txt from requirements/*.in
 		case "$$f" in requirements/fuzz.in|requirements/audit.in) continue;; esac; \
 		echo "compiling $$f"; \
 		uv pip compile --quiet --generate-hashes --universal \
-			--python-version 3.10 "$$f" -o "$${f%.in}.txt"; \
+			--python-version 3.11 "$$f" -o "$${f%.in}.txt"; \
 	done
 	@echo "compiling requirements/audit.in (3.12, the Security workflow's pip-audit Python)"
 	@uv pip compile --quiet --generate-hashes --universal \

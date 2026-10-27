@@ -8,7 +8,7 @@
   <a href="https://scorecard.dev/viewer/?uri=github.com/sebastienrousseau/acmt001-lsp"><img src="https://img.shields.io/ossf-scorecard/github.com/sebastienrousseau/acmt001-lsp?style=for-the-badge&label=OpenSSF%20Scorecard&logo=openssf" alt="OpenSSF Scorecard" height="28" /></a>
   <a href="https://www.bestpractices.dev/projects/15826"><img src="https://img.shields.io/cii/level/15826?style=for-the-badge&label=OpenSSF%20Best%20Practices&logo=openssf" alt="OpenSSF Best Practices" height="28" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0%20OR%20MIT-blue.svg?style=for-the-badge" alt="License: Apache-2.0 OR MIT" height="28" /></a>
-  <a href="pyproject.toml"><img src="https://img.shields.io/badge/Python-3.10%2B-93450a.svg?style=for-the-badge&logo=python" alt="Python 3.10 or newer" height="28" /></a>
+  <a href="pyproject.toml"><img src="https://img.shields.io/badge/Python-3.11%2B-93450a.svg?style=for-the-badge&logo=python" alt="Python 3.11 or newer" height="28" /></a>
 </p>
 
 **Real-time editor help for ISO 20022 account-data files** — diagnostics,
@@ -65,7 +65,7 @@ Request); the pure helpers accept a `message_type` argument so a different type
 can be configured.
 
 **Acmt001-lsp** is part of the **acmt001 suite** — a set of independently
-installable packages (all Python 3.10+) sharing the `acmt001.services` layer:
+installable packages (all Python 3.11+) sharing the `acmt001.services` layer:
 
 | Package | Role |
 |---------|------|
@@ -83,7 +83,7 @@ flowchart LR
 
 ## Install
 
-**Acmt001-lsp** runs on macOS, Linux, and Windows and requires **Python 3.10+**
+**Acmt001-lsp** runs on macOS, Linux, and Windows and requires **Python 3.11+**
 and **pip**. It pulls in the core [`acmt001`][acmt001] library and
 [`pygls`][pygls] automatically.
 

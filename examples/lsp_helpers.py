@@ -2,7 +2,7 @@
 """Example: the LSP server's editor-feature helpers.
 
 Usage:
-    pip install acmt001-lsp     # requires Python 3.10+
+    pip install acmt001-lsp     # requires Python 3.11+
     python examples/lsp_helpers.py
 
 The acmt001 language server (launched as `acmt001-lsp` over stdio) powers

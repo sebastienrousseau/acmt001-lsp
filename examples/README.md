@@ -16,7 +16,7 @@ you can call them directly to see the diagnostics, completion items, and hover
 text an editor would receive.
 
 Both `acmt001-lsp` and its core dependency `acmt001` must be installed
-(Python 3.10+):
+(Python 3.11+):
 
 ```sh
 pip install acmt001-lsp
