@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "acmt001-lsp"
-version = "0.0.13"
+version = "0.0.14"
 description = "Language Server Protocol (LSP) server for authoring acmt001 ISO 20022 Account Management data files."
 authors = ["Sebastien Rousseau <sebastian.rousseau@gmail.com>"]
 license = "Apache-2.0 OR MIT"

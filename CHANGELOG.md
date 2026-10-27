@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.14] - 2026-10-27
+
+The suite moves to Python 3.11 and ships `0.0.14` together, core
+first: this release requires `acmt001` 0.0.14.
+
 ### Security
 
 - `requirements/audit.txt`, the Security workflow's pip-audit
@@ -35,6 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The release workflow's `pypa/gh-action-pypi-publish` pin moves to
   v1.14.3 (`7245906`).
+- GitHub Actions pins move to `actions/setup-python` v7.1.0 and
+  `github/codeql-action` v4.39.1 (#12).
 
 ## [0.0.13] - 2026-10-23
 
