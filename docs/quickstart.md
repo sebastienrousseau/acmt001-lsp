@@ -5,7 +5,7 @@ Install → editor wiring → first account-data edit, for `acmt001-lsp`.
 ## 1. Install
 
 `acmt001-lsp` runs on macOS, Linux, and Windows and requires Python
-3.10+. It pulls in the core `acmt001` library and `pygls` automatically.
+3.11+. It pulls in the core `acmt001` library and `pygls` automatically.
 
 ```sh
 python -m pip install acmt001-lsp

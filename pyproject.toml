@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "acmt001-lsp"
-version = "0.0.13"
+version = "0.0.14"
 description = "Language Server Protocol (LSP) server for authoring acmt001 ISO 20022 Account Management data files."
 authors = ["Sebastien Rousseau <sebastian.rousseau@gmail.com>"]
 license = "Apache-2.0 OR MIT"
@@ -15,16 +15,15 @@ packages = [
 acmt001-lsp = "acmt001_lsp.server:main"
 
 [tool.poetry.dependencies]
-python = ">=3.10,<4.0"
+python = ">=3.11,<4.0"
 # The suite releases in lockstep, core first: the floor is this release.
-acmt001 = ">=0.0.13,<1"
+acmt001 = ">=0.0.14,<1"
 # pygls.lsp.server and the publish API the server uses arrived in 2.0.
 pygls = ">=2.0,<3"
 
 [tool.poetry.group.dev.dependencies]
 # Mirrors requirements/ci.in, the hash-pinned set CI installs.
 packaging = ">=23.0"
-tomli = { version = ">=2.0", python = "<3.11" }
 pytest = ">=9.0.3,<10.0.0"
 pytest-cov = ">=6.0.0,<8.0.0"
 # CVE-2026-114134 (GHSA-cg8m-r9f2-5wm2) is fixed in black 26.10.1.
@@ -44,11 +43,11 @@ build-backend = "poetry.core.masonry.api"
 # so reformatting it would invalidate the check it exists to make.
 extend-exclude = "tests/test_suite_conformance\\.py"
 line-length = 79
-target-version = ['py310']
+target-version = ['py311']
 
 [tool.ruff]
 line-length = 79
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "W", "F", "I", "B", "C4", "UP"]
@@ -60,6 +59,11 @@ ignore = ["E501"]
 # come first.
 "benches/*.py" = ["E402"]
 "__init__.py" = ["F401"]
+# The vendored suite conformance file is byte-pinned to its canonical
+# copy (black excludes it above for the same reason) and keeps a tomli
+# fallback for the suite's 3.10 floor; with this repository on 3.11 that
+# branch is dead, and the fix belongs in the canonical copy, not here.
+"tests/test_suite_conformance.py" = ["UP036"]
 
 [tool.ruff.format]
 quote-style = "double"
@@ -81,7 +85,7 @@ addopts = [
 ]
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.11"
 strict = true
 warn_return_any = true
 warn_unused_configs = true

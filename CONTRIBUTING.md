@@ -8,7 +8,7 @@ suite. This guide covers the development workflow and standards.
 
 ### Prerequisites
 
-- Python 3.10+
+- Python 3.11+
 - [Poetry](https://python-poetry.org/docs/#installation)
 - Git with SSH commit signing configured
 
