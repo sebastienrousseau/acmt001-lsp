@@ -14,6 +14,9 @@ first: this release requires `acmt001` 0.0.14.
 
 ### Security
 
+- **`acmt001` is floored at `>=0.0.14,<1`**, the core release this one
+  ships with, in `pyproject.toml` and `requirements/runtime.in`;
+  `runtime.txt`, `ci.txt` and `fuzz.txt` pin it at 0.0.14.
 - `requirements/audit.txt`, the Security workflow's pip-audit
   environment, is compiled for Python 3.12, the only Python that installs
   it, and floors `filelock` at `>=4.2.1` (GHSA-9vhv-jxww-xfm5,
