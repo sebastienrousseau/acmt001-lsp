@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.15] - 2026-10-29
+
+Ships with the acmt001 suite at `0.0.15`, after the core. The suite's
+manuals move to Sphinx 9; this server has no manual of its own, so it
+changes only in its version and its core floor.
+
+### Changed
+
+- Requires `acmt001 >= 0.0.15, < 1` in `pyproject.toml` and
+  `requirements/runtime.in`.
+
 ## [0.0.14] - 2026-10-27
 
 The suite moves to Python 3.11 and ships `0.0.14` together, core
