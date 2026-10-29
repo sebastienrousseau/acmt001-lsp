@@ -17,7 +17,7 @@ acmt001-lsp = "acmt001_lsp.server:main"
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
 # The suite releases in lockstep, core first: the floor is this release.
-acmt001 = ">=0.0.14,<1"
+acmt001 = ">=0.0.15,<1"
 # pygls.lsp.server and the publish API the server uses arrived in 2.0.
 pygls = ">=2.0,<3"
 
