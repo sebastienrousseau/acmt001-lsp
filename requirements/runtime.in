@@ -6,7 +6,7 @@
 # package itself goes on with --no-deps.
 # Regenerate with: make pip-compile
 # The suite releases in lockstep, core first: the floor is this release.
-acmt001>=0.0.14,<1
+acmt001>=0.0.15,<1
 pygls>=2.0,<3
 # Advisory floors for transitive dependencies, so no affected version can
 # resolve: cryptography PYSEC-2026-3552 (GHSA-g6cj-pr64-35w5), anyio
