@@ -134,7 +134,7 @@ certifi==2026.10.19 \
     #   -r requirements/runtime.in
     #   httpcore
     #   httpx
-cffi==2.1.1 ; platform_python_implementation != 'PyPy' \
+cffi==2.1.1 \
     --hash=sha256:046bfc24911b37851ee1b51aab8bffe713d89c68c6a057b09484ce9fd5f69b4e \
     --hash=sha256:06c72bb76605a4b0cd0aad6930b69d4baf7dd5d806cfc409b824191099700e66 \
     --hash=sha256:0beceaabe56af686895136a2de78db54ecd8e4046b236b8fd6d6cb61389e9bf2 \
@@ -248,8 +248,6 @@ colorama==0.4.6 \
     --hash=sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6
     # via
     #   acmt001
-    #   bandit
-    #   pytest
     #   radon
 complexipy==8.1.0 \
     --hash=sha256:01b23f1bd8b049de7a0909d26e41f820561160251dd19255ac0a36df4605f86f \
@@ -371,7 +369,7 @@ complexipy==8.1.0 \
     --hash=sha256:fd34eb7234da572a6cf21e1bc078f3670de4ad8b0a4904dcdd82bed6fd4f243e \
     --hash=sha256:ff48a5652c6cefcf4db0a74d31fa935899a41a18e51b9b5ee7289185745e5ae9
     # via -r requirements/ci.in
-coverage==7.17.0 \
+coverage[toml]==7.17.0 \
     --hash=sha256:032d4c2db4c677eb71d43f2f8b80bf64e9346f7a3f7b6ebb13f1782f3cc6c274 \
     --hash=sha256:03baf0688e14a5a44ffd1eefa8928dfc92b14565e521174e072b31b971aa1657 \
     --hash=sha256:045c1eeb19fb4eae949850a761102fffb3a5f638b97f977912f95843e54f6669 \
@@ -723,7 +721,7 @@ jsonschema-specifications==2025.9.1 \
     --hash=sha256:98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe \
     --hash=sha256:b540987f239e745613c7a9176f3edb72b832a4ac465cf02712288397832b5e8d
     # via jsonschema
-librt==0.16.0 ; platform_python_implementation != 'PyPy' \
+librt==0.16.0 \
     --hash=sha256:001bfd59a7d45b17e3e75f2a8c6405280b35e7b84471792778e718c4f368950e \
     --hash=sha256:0058f9d68721094105917254c72ac0569117bb7b13b9769cf45d26d89f9d21cd \
     --hash=sha256:02118f56a9c36ddd07dfd9b919d9ecc117ba20a90987d56aa4c429fa34509188 \
@@ -1171,7 +1169,7 @@ pyarrow==25.0.1 \
     --hash=sha256:f3831aaa25c67a99f99dc8b05873cb9d64560390372e2aa197ce9dd4a3f06a44 \
     --hash=sha256:f729cfdbd36fd99d543b67a914d2de044c84ebe45be8b34902b299b608c15c8f
     # via acmt001
-pycparser==3.12 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy' \
+pycparser==3.12 \
     --hash=sha256:a076f3f489b39b43ed13563a1dafe42447445bec2e294154ec5c57fcdda4c85e \
     --hash=sha256:f03387877eab82ce01bbdfd0ba7252ee55a90b1c708d5129e2ce915475cf1db6
     # via cffi
@@ -1612,25 +1610,25 @@ rpds-py==2026.9.1 \
     # via
     #   jsonschema
     #   referencing
-ruff==0.17.2 \
-    --hash=sha256:122258f6ecde0e0dd1bb60b24263c3edde4338caf723fca711cc729f9bfd414a \
-    --hash=sha256:195ad918027f817c119310ca89a42d347887dfc28934aaa869325e9c5dc9d962 \
-    --hash=sha256:1b59d447f197bef9ef48a22ba1a6016137753c6099e9bac9c36eb566e422424c \
-    --hash=sha256:2d086be452eed686aa51271ecf2cbe5037956517cc6ee39a17b4489ac12f8bbe \
-    --hash=sha256:39c5b55c960515cdb32be16e69efb5734c589c06a0eb38a22694524a336b889d \
-    --hash=sha256:583bd67bb9e7061dd09bc46a0a884bae2bbd214dbcd48e509813612619683869 \
-    --hash=sha256:5875a16b0de70b43cb81eabea5ae5e8f5d1b2fd1b5e6ed07f80cfe5019d0bd5a \
-    --hash=sha256:6bce7d1f5165701ae18f5df85c65afe78cddfa6c5fb4b9bdb0014d60388f3edd \
-    --hash=sha256:7cfd783590edf2b77317882631900f6a13ea2e8eacefe6ebf2370d2715299160 \
-    --hash=sha256:7f8fba429d6ac4128ab29cfb8fa6240d2fa671d04adf7f84d3b22fc7b6b6bea4 \
-    --hash=sha256:84d632402d14c23b488f941db23712d6736a013225162062d34558c3f3c780eb \
-    --hash=sha256:8c21b4ab24485358f17291a4f8dc5399b834e963b8efedd920fe4fdb02081bb4 \
-    --hash=sha256:92a80d2f44584dabb0189b3a6c393e37e525e04942838482010575cb81945be7 \
-    --hash=sha256:96a65e755d8dba094707fb23ab602111d9a31ec2835b3a6992a1914a8fcb211e \
-    --hash=sha256:b7d0906677d89bbf3cf73cde64b5bbe2ab35df3ae43e49ee2627301e91265bac \
-    --hash=sha256:ba405cbd5ec7bda1f555d5e52be1fd68d02608d4d95d24591bdac92cfacb579f \
-    --hash=sha256:c555a877f8f41447e318101cfefea9bf12dfa9f82eedf90c376e57e069f917d0 \
-    --hash=sha256:c60f93fec7142dba5b8f487f94bf2f6231dae24dc11e4c48648347c8b0720004
+ruff==0.17.3 \
+    --hash=sha256:029c37cbd3de48ca37aa12117bead2d065f15da17d66bf84e0d4274013705db2 \
+    --hash=sha256:27bb571ac78fef178fe5118d2827df95c2aae74a48fff2b15f6acd03af5ff5bb \
+    --hash=sha256:39405f341deec934b4289634324ad695f72df2970f9121582872eaf5b722f0f5 \
+    --hash=sha256:4590b9d86c0b1543ebb09094254e191cd43fe8edaf330baa035aab03da251532 \
+    --hash=sha256:46539cb031b01fd29ae0a02142483c46640b233ee12bb1c1b690bffa1555d5ca \
+    --hash=sha256:56b8ffb3f3b3cbccb8b76b71b38261b7ed982ef5d20f5b447b1b61a7f4949b24 \
+    --hash=sha256:68074094f55ca3d29ab19491f640282f7a84061c4c7977aa5094b968ca457e9a \
+    --hash=sha256:692fdb46d0fd9c71e380947dc5fc72f2c3f881073bc1f739e4579376231affbe \
+    --hash=sha256:6a754c0341bc9ca151b7b335988b3263921c08859f84ca219b70cee825571b6f \
+    --hash=sha256:7fa4b0f931cdbcb8a52044f370a3eb429fb42eb88807b0e800fcaa98dd42b24e \
+    --hash=sha256:81fce74bcd6be0e9da7c67c7553fd0f1f12964a2052cd728ef917b937a5ca1d9 \
+    --hash=sha256:a57049c8addb3662073859bb55a7ad35aa54f8a7c9ed268911d1333c5aadaaa9 \
+    --hash=sha256:ab5fa7ed5ce18554ea69d850ad162cbaa0c85fc47c08d83a569f806681c9a6ad \
+    --hash=sha256:ab86b84cd9d05e56d329742c0cabdcbe2d1d56c98f4a04aab9b5b66196febfb4 \
+    --hash=sha256:b75cc113b3aca388933d8296b667b1ac401a80317ea3074c9b0a66541199da29 \
+    --hash=sha256:bbde18beccd98c29a227c63c99022e3443b99258e08326df6425dfe0443705ef \
+    --hash=sha256:c673c170e27834d1262e3a9c1e97bdc9b9c3b180c63d89173ce69747232474c1 \
+    --hash=sha256:e407b4a6852853a9a2cdce96963e94ad9775578bb44e7561a0f2829f3cc04b11
     # via -r requirements/ci.in
 six==1.17.0 \
     --hash=sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274 \
@@ -1664,11 +1662,11 @@ typing-inspection==0.4.4 \
     # via
     #   fastapi
     #   pydantic
-uvicorn==0.54.0 \
+uvicorn[standard]==0.54.0 \
     --hash=sha256:505bdb0f318731d45f1f712071fc781a8981f6847a31c902c9f5e652d4f67faf \
     --hash=sha256:a2e33cbfaa0306f8e6b0c13e0cb89d7d7a2da3e62b90c66e18c33d9807b28620
     # via acmt001
-uvloop==0.23.0 ; platform_python_implementation != 'PyPy' and sys_platform != 'cygwin' and sys_platform != 'win32' \
+uvloop==0.23.0 \
     --hash=sha256:0305871ac712f54b62af73f943dbf21ae3ce80a44bc0f0151424484affa85645 \
     --hash=sha256:090865d8ce7a03986755a3ce711b7dd0d4b44eb14ab74368b717f3fad1180208 \
     --hash=sha256:098a85e1393ef5202767b7e5fb41a32cd8bd81e6ee4af364c179801c4aa3f6d4 \
