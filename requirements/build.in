@@ -11,4 +11,4 @@ twine
 # urllib3 PYSEC-2026-4175/4176/4177, certifi PYSEC-2026-4320
 # (GHSA-6q48-6c7w-9gw2).
 urllib3>=2.8.0
-certifi>=2026.10.19
+certifi>=2026.10.23
