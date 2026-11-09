@@ -13,6 +13,6 @@ pygls>=2.0,<3
 # PYSEC-2026-4023/4024/4025, opentelemetry-api GHSA-xcq7-p3pf-p88h and
 # certifi PYSEC-2026-4320 (GHSA-6q48-6c7w-9gw2), all through acmt001.
 cryptography>=50.0.0
-anyio>=4.14.2
+anyio>=4.16.0
 opentelemetry-api>=1.45.2
 certifi>=2026.10.23
